@@ -1,19 +1,21 @@
-import { HiTrash } from 'react-icons/hi';
+import css from './ContactItem.module.css';
+
 const ContactItem = ({ name, number, id, onDeleteContact }) => {
   return (
-    <li key={id}>
-      <p>{name}</p>
-      <p>{number}</p>
+    <>
+      <p className={css.contactName}>{name}</p>
+      <p className={css.contactNumber}>{number}</p>
       <button
+        className={css.contactBtnDelete}
         type="button"
         onClick={() => {
           onDeleteContact(id);
         }}
       >
-        <HiTrash />
+        {' '}
         Delete
       </button>
-    </li>
+    </>
   );
 };
 

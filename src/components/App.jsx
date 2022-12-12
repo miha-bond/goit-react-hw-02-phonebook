@@ -10,29 +10,20 @@ class App extends React.Component {
     filter: '',
   };
 
-  addContact = (name, number) => {
-    const contact = {
+  addContact = ({ name, number }) => {
+    const newContact = {
       id: nanoid(),
       name,
       number,
     };
-
-    if (
-      this.state.contact.find(
-        contact => contact.name.toLowerCase() === name.toLowercase()
-      )
-    ) {
-      alert(`${name} is already in your contact list`);
-      return;
-    }
-    this.setState(prevState => ({
-      contacts: [contact, ...prevState.contact],
+    this.setState(({ contacts }) => ({
+      contacts: [newContact, ...contacts],
     }));
   };
 
   deleteContact = deleteContactId => {
     this.setState(prevState => ({
-      contact: prevState.contact.filter(
+      contacts: prevState.contacts.filter(
         contact => contact.id !== deleteContactId
       ),
     }));
@@ -50,9 +41,12 @@ class App extends React.Component {
     });
 
     return (
-      <div>
-        <h2>Phonebook</h2>
-        <ContactForm onSubmit={this.addContact} />
+      <div style={{ padding: '20px', marginLeft: '15px' }}>
+        <h1>Phonebook</h1>
+        <ContactForm
+          onSubmit={this.addContact}
+          contacts={this.state.contacts}
+        />
         <h2>Contacts</h2>
         <Filter value={this.state.filter} onChange={this.handleFilterChange} />
         <ContactList

@@ -1,26 +1,41 @@
 import React from 'react';
 import css from './ContactForm.module.css';
 
+const INITIAL_STATE = {
+  name: '',
+  number: '',
+};
 class ContactForm extends React.Component {
-  state = {
-    name: '',
-    number: '',
+  state = INITIAL_STATE;
+
+  handleChange = e => {
+    const { name, value } = e.currentTarget;
+    this.setState({
+      [name]: value,
+    });
   };
 
-  handelSubmit = evt => {
-    evt.preventDefault();
-    this.props.onSubmit(this.state.name, this.state.number);
-    this.setState({ name: '', number: '' });
+  handleSubmit = e => {
+    const { contacts } = this.props;
+    const { name } = this.state;
+    e.preventDefault();
+
+    if (contacts.find(contact => contact.name === name)) {
+      return alert(`${name} is already in contacts.`);
+    } else {
+      this.props.onSubmit(this.state);
+      this.reset();
+    }
   };
 
-  handleInputChenge = evt => {
-    this.setState({ [evt.target.name]: evt.target.value });
+  reset = () => {
+    this.setState(INITIAL_STATE);
   };
 
   render() {
     return (
-      <form className={css.contactForm} onSubmit={this.handelSubmit}>
-        <label className={css.name} htmlFor="">
+      <form className={css.contactForm} onSubmit={this.handleSubmit}>
+        <label htmlFor="">
           Name
           <input
             className={css.nameInput}
@@ -30,10 +45,10 @@ class ContactForm extends React.Component {
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
             value={this.state.name}
-            onChange={this.handleInputChenge}
+            onChange={this.handleChange}
           />
         </label>
-        <label className={css.phone} htmlFor="">
+        <label htmlFor="">
           Phone
           <input
             className={css.phoneInput}
@@ -43,7 +58,7 @@ class ContactForm extends React.Component {
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
             value={this.state.number}
-            onChange={this.handleInputChenge}
+            onChange={this.handleChange}
           />
         </label>
         <button className={css.btnSubmit} type="submit">

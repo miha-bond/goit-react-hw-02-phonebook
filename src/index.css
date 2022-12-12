@@ -5,8 +5,15 @@ body {
   font-family: 'Comfortaa';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: rgba(158, 158, 158, 0.568);
 }
 
 code {
   font-family: 'Comfortaa';
+}
+
+ul,
+li,
+p {
+  padding: 0;
 }
